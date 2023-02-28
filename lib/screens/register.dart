@@ -1,12 +1,11 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:device_info/device_info.dart';
-import '../providers/AuthProvider.dart';
+import 'package:queen_of_peace/providers/auth_provider.dart';
+import 'package:get/get.dart';
 
 class Register extends StatefulWidget {
-  Register();
+  const Register({super.key});
 
   @override
   _RegisterState createState() => _RegisterState();
@@ -21,20 +20,12 @@ class _RegisterState extends State<Register> {
   final passwordConfirmController = TextEditingController();
 
   String errorMessage = '';
-  late String deviceName;
-
-  @override
-  void initState() {
-    super.initState();
-
-    getDeviceName();
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Register'),
+        title: const Text('Register'),
       ),
       body: Container(
           color: Theme.of(context).primaryColorDark,
@@ -63,7 +54,8 @@ class _RegisterState extends State<Register> {
                             onChanged: (text) => setState(() {
                               errorMessage = '';
                             }),
-                            decoration: InputDecoration(labelText: 'Name'),
+                            decoration:
+                                const InputDecoration(labelText: 'Name'),
                           ),
                           TextFormField(
                             keyboardType: TextInputType.emailAddress,
@@ -78,8 +70,8 @@ class _RegisterState extends State<Register> {
                             onChanged: (text) => setState(() {
                               errorMessage = '';
                             }),
-                            decoration:
-                                InputDecoration(labelText: 'Email address'),
+                            decoration: const InputDecoration(
+                                labelText: 'Email address'),
                           ),
                           TextFormField(
                             obscureText: true,
@@ -96,7 +88,8 @@ class _RegisterState extends State<Register> {
                             onChanged: (text) => setState(() {
                               errorMessage = '';
                             }),
-                            decoration: InputDecoration(labelText: 'Password'),
+                            decoration:
+                                const InputDecoration(labelText: 'Password'),
                           ),
                           TextFormField(
                             obscureText: true,
@@ -113,24 +106,24 @@ class _RegisterState extends State<Register> {
                             onChanged: (text) => setState(() {
                               errorMessage = '';
                             }),
-                            decoration:
-                                InputDecoration(labelText: 'Confirm password'),
+                            decoration: const InputDecoration(
+                                labelText: 'Confirm password'),
                           ),
                           ElevatedButton(
                             onPressed: () => submit(),
-                            child: const Text('Register'),
                             style: ElevatedButton.styleFrom(
                                 minimumSize: const Size(double.infinity, 36)),
+                            child: const Text('Register'),
                           ),
                           Text(
                             errorMessage,
-                            style: TextStyle(color: Colors.red),
+                            style: const TextStyle(color: Colors.red),
                           ),
                           Padding(
                               padding: const EdgeInsets.only(top: 20.0),
                               child: InkWell(
                                 onTap: () {
-                                  Navigator.pop(context, '/login');
+                                  Navigator.of(context).maybePop('/login');
                                 },
                                 child: const Text(
                                     'Already registered? Login here!'),
@@ -155,12 +148,8 @@ class _RegisterState extends State<Register> {
         Provider.of<AuthProvider>(context, listen: false);
 
     try {
-      await provider.register(
-          nameController.text,
-          emailController.text,
-          passwordController.text,
-          passwordConfirmController.text,
-          deviceName);
+      await provider.register(nameController.text, emailController.text,
+          passwordController.text, passwordConfirmController.text);
 
       Navigator.pop(context);
 
@@ -171,30 +160,4 @@ class _RegisterState extends State<Register> {
       });
     }
   }
-
-  Future<void> getDeviceName() async {
-    final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
-
-    try {
-      if ( Platform.isAndroid ) {
-        var build = await deviceInfoPlugin.androidInfo;
-
-        setState(() {
-          deviceName = build.model;
-        });
-      } else if ( Platform.isIOS ) {
-        var build = await deviceInfoPlugin.iosInfo;
-
-        setState(() {
-          deviceName = build.model;
-        });
-      }
-    } on PlatformException {
-      setState(() {
-        deviceName = 'Failed to get platform version';
-      });
-    }
-
-  }
-
 }

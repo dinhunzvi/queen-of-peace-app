@@ -6,7 +6,8 @@ class EditPatient extends StatefulWidget {
   final Function patientCallback;
   final Patient patient;
 
-  const EditPatient(this.patient,this.patientCallback, {Key? key}) : super(key: key);
+  const EditPatient(this.patient, this.patientCallback, {Key? key})
+      : super(key: key);
 
   @override
   _EditPatientState createState() => _EditPatientState();
@@ -35,13 +36,13 @@ class _EditPatientState extends State<EditPatient> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: const EdgeInsets.only(top: 50, left: 10, right: 10),
+      padding: const EdgeInsets.only(top: 50, left: 10, right: 10),
       child: Form(
-        key: _formKey,
+          key: _formKey,
           child: Column(
             children: <Widget>[
               TextFormField(
-                onChanged: ( text ) => setState(() {
+                onChanged: (text) => setState(() {
                   errorMessage = '';
                 }),
                 controller: patientNameController,
@@ -54,7 +55,6 @@ class _EditPatientState extends State<EditPatient> {
                 },
                 decoration: const InputDecoration(
                     border: OutlineInputBorder(), labelText: 'Name'),
-
               ),
               TextFormField(
                 controller: patientDobController,
@@ -62,8 +62,7 @@ class _EditPatientState extends State<EditPatient> {
                   selectDate(context);
                 },
                 decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Date of birth'),
+                    border: OutlineInputBorder(), labelText: 'Date of birth'),
                 validator: (value) {
                   if (value!.trim().isEmpty) {
                     return 'Date of birth is required';
@@ -88,8 +87,7 @@ class _EditPatientState extends State<EditPatient> {
                 onChanged: (text) => setState(() {
                   errorMessage = '';
                 }),
-                decoration: const InputDecoration(
-                    labelText: 'Email address'),
+                decoration: const InputDecoration(labelText: 'Email address'),
               ),
               TextFormField(
                 controller: patientAddressController,
@@ -116,8 +114,8 @@ class _EditPatientState extends State<EditPatient> {
                       child: const Text('Save')),
                   ElevatedButton(
                     onPressed: () => Navigator.pop(context),
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.red),
+                    style:
+                        ElevatedButton.styleFrom(backgroundColor: Colors.red),
                     child: const Text('Cancel'),
                   )
                 ],
@@ -127,8 +125,7 @@ class _EditPatientState extends State<EditPatient> {
                 style: const TextStyle(color: Colors.red),
               )
             ],
-          )
-      ),
+          )),
     );
   }
 
@@ -136,18 +133,17 @@ class _EditPatientState extends State<EditPatient> {
     final DateTime? picked = await showDatePicker(
         context: context,
         initialDate: DateTime.now(),
-        firstDate: DateTime(DateTime.now().year - 5),
-        lastDate: DateTime(DateTime.now().year + 5));
+        firstDate: DateTime(DateTime.now().year - 65),
+        lastDate: DateTime(DateTime.now().year - 18));
 
     if (picked != null) {
       setState(() {
-        patientDobController.text = DateFormat('MM/dd/yyyy').format(picked);
-
+        patientDobController.text = DateFormat('yyyy-MM-dd').format(picked);
       });
     }
   }
 
-  Future updatePatient( context ) async {
+  Future updatePatient(context) async {
     final form = _formKey.currentState;
 
     if (!form!.validate()) {
@@ -159,9 +155,8 @@ class _EditPatientState extends State<EditPatient> {
     widget.patient.dob = patientDobController.text;
     widget.patient.address = patientAddressController.text;
 
-    await widget.patientCallback( widget.patient );
+    await widget.patientCallback(widget.patient);
 
     Navigator.pop(context);
   }
-
 }

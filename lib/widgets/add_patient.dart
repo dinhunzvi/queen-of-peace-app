@@ -119,13 +119,13 @@ class _AddPatientState extends State<AddPatient> {
   Future selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
         context: context,
-        initialDate: DateTime.now(),
-        firstDate: DateTime(DateTime.now().year - 5),
-        lastDate: DateTime(DateTime.now().year + 5));
+        initialDate: DateTime( 2000 ),
+        firstDate: DateTime( 1983 ),
+        lastDate: DateTime( 2005));
 
     if (picked != null) {
       setState(() {
-        patientDobController.text = DateFormat('MM/dd/yyyy').format(picked);
+        patientDobController.text = DateFormat('yyyy-MM-dd').format(picked);
       });
     }
   }

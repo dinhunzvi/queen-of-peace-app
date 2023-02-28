@@ -1,11 +1,9 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import '../providers/auth_provider.dart';
 
 class Login extends StatefulWidget {
-  Login();
+  const Login({super.key});
 
   @override
   _LoginState createState() => _LoginState();
@@ -76,13 +74,13 @@ class _LoginState extends State<Login> {
                           ),
                           ElevatedButton(
                             onPressed: () => submit(),
-                            child: const Text('Login'),
                             style: ElevatedButton.styleFrom(
                                 minimumSize: const Size(double.infinity, 36)),
+                            child: const Text('Login'),
                           ),
                           Text(
                             errorMessage,
-                            style: TextStyle(color: Colors.red),
+                            style: const TextStyle(color: Colors.red),
                           ),
                           Padding(
                               padding: const EdgeInsets.only(top: 20.0),
@@ -110,13 +108,10 @@ class _LoginState extends State<Login> {
     }
 
     final AuthProvider provider =
-    Provider.of<AuthProvider>(context, listen: false);
+        Provider.of<AuthProvider>(context, listen: false);
 
     try {
-      await provider.login(
-          emailController.text,
-          passwordController.text,
-          deviceName);
+      await provider.login(emailController.text, passwordController.text);
 
       // return token;
     } catch (Exception) {
@@ -125,7 +120,4 @@ class _LoginState extends State<Login> {
       });
     }
   }
-  
 }
-
-

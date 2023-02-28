@@ -8,6 +8,7 @@ import 'package:queen_of_peace/widgets/edit_user.dart';
 class Users extends StatefulWidget {
   const Users({super.key});
 
+  @override
   _UsersState createState() => _UsersState();
 }
 
@@ -43,7 +44,7 @@ class _UsersState extends State<Users> {
                                 return EditUser(provider.updateUser, user);
                               });
                         },
-                        icon: Icon(Icons.edit))
+                        icon: const Icon(Icons.edit))
                   ],
                 ),
               );

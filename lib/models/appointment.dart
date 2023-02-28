@@ -1,15 +1,17 @@
 class Appointment {
   int id;
-  int patientId;
+  int? patientId;
   String appointmentDate;
-  String bpReading;
-  String temperature;
-  String sugarLevel;
+  String patientName;
+  int bpReading;
+  double temperature;
+  double sugarLevel;
 
   Appointment(
       {required this.id,
       required this.patientId,
       required this.appointmentDate,
+      required this.patientName,
       required this.bpReading,
       required this.temperature,
       required this.sugarLevel});
@@ -17,10 +19,11 @@ class Appointment {
   factory Appointment.fromJson(Map<String, dynamic> json) {
     return Appointment(
         id: json['id'],
-        patientId: json['patientId'],
-        appointmentDate: json['appointmentDate'],
-        bpReading: json['bpReading'],
-        temperature: json['temperature'],
-        sugarLevel: json['sugarLevel']);
+        patientId: json['patient_id'],
+        appointmentDate: json['appointment_date'],
+        patientName: json['patient_name'],
+        bpReading: json['bp_reading'],
+        temperature: double.parse(json['temperature']),
+        sugarLevel: double.parse(json['sugar_levels']));
   }
 }

@@ -1,19 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:queen_of_peace/models/appointment.dart';
 import 'package:queen_of_peace/models/patient.dart';
 import 'package:queen_of_peace/providers/patient_provider.dart';
 
-class AddAppointment extends StatefulWidget {
+class EditAppointment extends StatefulWidget {
   final Function appointmentCallback;
+  final Appointment appointment;
 
-  const AddAppointment(this.appointmentCallback, {super.key});
+  const EditAppointment(this.appointmentCallback, this.appointment,
+      {super.key});
 
   @override
-  _AddAppointment createState() => _AddAppointment();
+  _EditAppointment createState() => _EditAppointment();
 }
 
-class _AddAppointment extends State<AddAppointment> {
+class _EditAppointment extends State<EditAppointment> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   String errorMessage = '';
@@ -22,6 +26,17 @@ class _AddAppointment extends State<AddAppointment> {
   final bpReadingController = TextEditingController();
   final temperatureController = TextEditingController();
   final sugarLevelController = TextEditingController();
+
+  @override
+  void initState() {
+    appointmentDateController.text = widget.appointment.appointmentDate;
+    bpReadingController.text = widget.appointment.bpReading.toString();
+    patientController.text = widget.appointment.patientId.toString();
+    sugarLevelController.text = widget.appointment.sugarLevel.toString();
+    temperatureController.text = widget.appointment.temperature.toString();
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -60,10 +75,10 @@ class _AddAppointment extends State<AddAppointment> {
                 keyboardType: const TextInputType.numberWithOptions(
                     signed: true, decimal: false),
                 decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Blood Pressure',
-                    hintText: '0',
-                    ),
+                  border: OutlineInputBorder(),
+                  labelText: 'Blood Pressure',
+                  hintText: '0',
+                ),
                 validator: (value) {
                   if (value!.trim().isEmpty) {
                     return 'Blood pressure is required';
@@ -88,10 +103,10 @@ class _AddAppointment extends State<AddAppointment> {
                 keyboardType: const TextInputType.numberWithOptions(
                     signed: true, decimal: true),
                 decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Temperature',
-                    hintText: '36',
-                    ),
+                  border: OutlineInputBorder(),
+                  labelText: 'Temperature',
+                  hintText: '36',
+                ),
                 validator: (value) {
                   if (value!.trim().isEmpty) {
                     return 'Temperature is required';
@@ -139,7 +154,7 @@ class _AddAppointment extends State<AddAppointment> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   ElevatedButton(
-                      onPressed: () => addAppointment(context),
+                      onPressed: () => updateAppointment(context),
                       child: const Text('Save')),
                   ElevatedButton(
                     onPressed: () => Navigator.pop(context),
@@ -193,18 +208,20 @@ class _AddAppointment extends State<AddAppointment> {
     });
   }
 
-  Future addAppointment(context) async {
+  Future updateAppointment(context) async {
     final form = _formKey.currentState;
 
     if (!form!.validate()) {
       return;
     }
 
-    widget.appointmentCallback(
-      patientController.text, appointmentDateController.text,
-        bpReadingController.text, temperatureController.text,
-      sugarLevelController.text
-    );
+    widget.appointment.patientId = int.parse(patientController.text);
+    widget.appointment.temperature = double.parse(temperatureController.text);
+    widget.appointment.bpReading = int.parse(bpReadingController.text);
+    widget.appointment.sugarLevel = double.parse(sugarLevelController.text);
+    widget.appointment.appointmentDate = appointmentDateController.text;
+
+    widget.appointmentCallback(widget.appointment);
 
     Navigator.pop(context);
   }
@@ -217,8 +234,10 @@ class _AddAppointment extends State<AddAppointment> {
         lastDate: DateTime(DateTime.now().year + 5));
 
     if (picked != null) {
-      setState(() {});
+      setState(() {
+        appointmentDateController.text =
+            DateFormat('yyyy-MM-dd').format(picked);
+      });
     }
   }
-
 }
