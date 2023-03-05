@@ -38,4 +38,12 @@ class PatientProvider extends ChangeNotifier {
 
     notifyListeners();
   }
+
+  Future<void> deletePatient(Patient patient) async {
+    try {
+      apiService.deletePatient(patient.id);
+    } on Exception {
+      throw Exception('Error deleting patient');
+    }
+  }
 }

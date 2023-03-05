@@ -38,4 +38,12 @@ class AppointmentProvider extends ChangeNotifier {
 
     notifyListeners();
   }
+
+  Future<void> deleteAppointment(Appointment appointment) async {
+    try {
+      await apiService.deleteAppointment(appointment.id);
+    } on Exception {
+      throw Exception('Error deleting appointment');
+    }
+  }
 }

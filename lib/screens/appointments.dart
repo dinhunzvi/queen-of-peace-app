@@ -53,7 +53,30 @@ class _AppointmentsState extends State<Appointments> {
                             });
                       },
                       icon: const Icon(Icons.edit)),
-                  const IconButton(onPressed: null, icon: Icon(Icons.delete))
+                  IconButton(
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: const Text("Confirmation"),
+                              content: const Text(
+                                  "Are you sure you want to delete appointment?"),
+                              actions: [
+                                TextButton(
+                                    onPressed: () => Navigator.pop(context),
+                                    child: const Text('Cancel')),
+                                TextButton(
+                                    onPressed: () => deleteAppointment(
+                                        provider.deleteAppointment,
+                                        appointment),
+                                    child: const Text('Delete'))
+                              ],
+                            );
+                          },
+                        );
+                      },
+                      icon: const Icon(Icons.delete))
                 ],
               ),
             );
@@ -69,5 +92,10 @@ class _AppointmentsState extends State<Appointments> {
                 });
           }),
     );
+  }
+
+  Future deleteAppointment(Function callBack, Appointment appointment) async {
+    await callBack(appointment);
+    Navigator.pop(context);
   }
 }

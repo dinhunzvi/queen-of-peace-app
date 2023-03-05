@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:queen_of_peace/models/appointment.dart';
 
 import '../models/patient.dart';
@@ -108,6 +109,21 @@ class ApiService {
     return Patient.fromJson(jsonDecode(response.body));
   }
 
+  Future<void> deletePatient(int id) async {
+    http.Response response = await http.delete(
+      Uri.parse('${baseUrl}patients/$id'),
+      headers: {
+        HttpHeaders.acceptHeader: 'application/json',
+        HttpHeaders.authorizationHeader: 'Bearer $token',
+        HttpHeaders.contentTypeHeader: 'application/json'
+      },
+    );
+
+    if (response.statusCode != 204) {
+      throw Exception('Error deleting patient');
+    }
+  }
+
   Future<List<Appointment>> fetchAppointments() async {
     http.Response response =
         await http.get(Uri.parse('${baseUrl}appointments'), headers: {
@@ -168,6 +184,21 @@ class ApiService {
     }
 
     return Appointment.fromJson(jsonDecode(response.body));
+  }
+
+  Future<void> deleteAppointment(int id) async {
+    http.Response response = await http.delete(
+      Uri.parse('${baseUrl}appointments/$id'),
+      headers: {
+        HttpHeaders.contentTypeHeader: 'application/json',
+        HttpHeaders.acceptHeader: 'application/json',
+        HttpHeaders.authorizationHeader: 'Bearer $token'
+      },
+    );
+
+    if (response.statusCode != 204) {
+      throw Exception('Error deleting appointment');
+    }
   }
 
   Future<String> login(String email, String password, String deviceName) async {

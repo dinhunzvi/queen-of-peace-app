@@ -47,7 +47,28 @@ class _PatientsState extends State<Patients> {
                             });
                       },
                       icon: const Icon(Icons.edit)),
-                  const IconButton(onPressed: null, icon: Icon(Icons.delete))
+                  IconButton(
+                      onPressed: () {
+                        showDialog<void>(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: const Text('Confirmation'),
+                                content: const Text(
+                                    'Are you sure you want to delete patient?'),
+                                actions: <Widget>[
+                                  TextButton(
+                                      onPressed: () => Navigator.pop(context),
+                                      child: const Text("Cancel")),
+                                  TextButton(
+                                      onPressed: () => deletePatient(
+                                          provider.deletePatient, patient),
+                                      child: const Text("Delete"))
+                                ],
+                              );
+                            });
+                      },
+                      icon: const Icon(Icons.delete))
                 ],
               ),
             );
@@ -63,5 +84,10 @@ class _PatientsState extends State<Patients> {
                 });
           }),
     );
+  }
+
+  Future deletePatient(Function callBack, Patient patient) async {
+    await callBack(patient);
+    Navigator.of(context).pop();
   }
 }
