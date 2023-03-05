@@ -10,11 +10,11 @@ class Home extends StatefulWidget {
   const Home({super.key});
 
   @override
-  _HomeState createState() => _HomeState();
+  State<Home> createState() => _HomeState();
 }
 
 class _HomeState extends State<Home> {
-  List<Widget> widgetOptions = [Patients(), Appointments()];
+  List<Widget> widgetOptions = [const Patients(), const Appointments()];
 
   int selectedIndex = 0;
 

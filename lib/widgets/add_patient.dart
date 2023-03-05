@@ -7,7 +7,7 @@ class AddPatient extends StatefulWidget {
   const AddPatient(this.patientCallback, {Key? key}) : super(key: key);
 
   @override
-  _AddPatientState createState() => _AddPatientState();
+  State<AddPatient> createState() => _AddPatientState();
 }
 
 class _AddPatientState extends State<AddPatient> {
@@ -119,9 +119,9 @@ class _AddPatientState extends State<AddPatient> {
   Future selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
         context: context,
-        initialDate: DateTime( 2000 ),
-        firstDate: DateTime( 1983 ),
-        lastDate: DateTime( 2005));
+        initialDate: DateTime(2000),
+        firstDate: DateTime(1983),
+        lastDate: DateTime(2005));
 
     if (picked != null) {
       setState(() {

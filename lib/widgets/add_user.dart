@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 class AddUser extends StatefulWidget {
   final Function userCallback;
 
-  const AddUser( this.userCallback, {super.key});
+  const AddUser(this.userCallback, {super.key});
 
   @override
-  _AddUserState createState() => _AddUserState();
+  State<AddUser> createState() => _AddUserState();
 }
 
 class _AddUserState extends State<AddUser> {
@@ -20,9 +20,9 @@ class _AddUserState extends State<AddUser> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: const EdgeInsets.only( top: 50, left: 10, right: 10 ),
+      padding: const EdgeInsets.only(top: 50, left: 10, right: 10),
       child: Form(
-        key: _formKey,
+          key: _formKey,
           child: Column(
             children: <Widget>[
               TextFormField(
@@ -65,7 +65,7 @@ class _AddUserState extends State<AddUser> {
                   ElevatedButton(
                     onPressed: () => Navigator.pop(context),
                     style:
-                    ElevatedButton.styleFrom(backgroundColor: Colors.red),
+                        ElevatedButton.styleFrom(backgroundColor: Colors.red),
                     child: const Text('Cancel'),
                   )
                 ],
@@ -79,7 +79,7 @@ class _AddUserState extends State<AddUser> {
     );
   }
 
-  Future addUser( context ) async {
+  Future addUser(context) async {
     final form = _formKey.currentState;
 
     if (!form!.validate()) {
@@ -87,8 +87,7 @@ class _AddUserState extends State<AddUser> {
     }
 
     await widget.userCallback(
-      userNameController.text ,userEmailController.text
-    );
+        userNameController.text, userEmailController.text);
 
     Navigator.pop(context);
   }

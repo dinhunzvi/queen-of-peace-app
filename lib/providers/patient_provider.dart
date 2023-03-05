@@ -11,31 +11,29 @@ class PatientProvider extends ChangeNotifier {
 
   late AuthProvider authProvider;
 
-  PatientProvider() {
-    apiService = ApiService();
+  PatientProvider(this.authProvider) {
+    apiService = ApiService(authProvider.token);
 
     init();
-
   }
 
   Future<void> init() async {
     patients = await apiService.fetchPatients();
 
     notifyListeners();
-
   }
 
-  Future<void> addPatient( String name, String email, String address, String dob)
-  async {
+  Future<void> addPatient(
+      String name, String email, String address, String dob) async {
     Patient patient = await apiService.addPatient(name, email, address, dob);
-    patients.add( patient );
+    patients.add(patient);
 
     notifyListeners();
   }
 
-  Future<void> updatePatient( Patient patient) async {
+  Future<void> updatePatient(Patient patient) async {
     Patient updatedPatient = await apiService.updatePatient(patient);
-    int index = patients.indexOf( patient );
+    int index = patients.indexOf(patient);
     patients[index] = updatedPatient;
 
     notifyListeners();

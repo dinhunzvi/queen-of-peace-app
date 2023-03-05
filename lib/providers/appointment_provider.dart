@@ -9,8 +9,8 @@ class AppointmentProvider extends ChangeNotifier {
   late ApiService apiService;
   late AuthProvider authProvider;
 
-  AppointmentProvider() {
-    apiService = ApiService();
+  AppointmentProvider(this.authProvider) {
+    apiService = ApiService(authProvider.token);
 
     init();
   }

@@ -10,7 +10,7 @@ class Appointments extends StatefulWidget {
   const Appointments({super.key});
 
   @override
-  _AppointmentsState createState() => _AppointmentsState();
+  State<Appointments> createState() => _AppointmentsState();
 }
 
 class _AppointmentsState extends State<Appointments> {
@@ -53,7 +53,7 @@ class _AppointmentsState extends State<Appointments> {
                             });
                       },
                       icon: const Icon(Icons.edit)),
-                  IconButton(onPressed: null, icon: const Icon(Icons.delete))
+                  const IconButton(onPressed: null, icon: Icon(Icons.delete))
                 ],
               ),
             );

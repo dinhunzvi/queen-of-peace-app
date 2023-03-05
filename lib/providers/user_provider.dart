@@ -11,36 +11,23 @@ class UserProvider extends ChangeNotifier {
 
   late AuthProvider authProvider;
 
-  UserProvider() {
-    apiService = ApiService();
+  UserProvider(this.authProvider) {
+    apiService = ApiService(authProvider.token);
 
     init();
-
   }
 
   Future<void> init() async {
     users = await apiService.fetchUsers();
 
     notifyListeners();
-
   }
 
-  Future<void> addUser( String name, String email ) async {
-    User user = await apiService.addUser( name, email);
-    users.add( user );
-
-    notifyListeners();
-
-  }
-
-  Future<void> updateUser( User user ) async {
-    User updatedUser = await apiService.updateUser( user );
-    int index = users.indexOf( updatedUser );
+  Future<void> updateUser(User user) async {
+    User updatedUser = await apiService.updateUser(user);
+    int index = users.indexOf(updatedUser);
     users[index] = updatedUser;
 
     notifyListeners();
-
   }
-
-
 }

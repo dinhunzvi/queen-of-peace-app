@@ -7,9 +7,11 @@ import '../models/user.dart';
 import 'package:http/http.dart' as http;
 
 class ApiService {
-  ApiService();
+  late final String token;
 
-  final String baseUrl = "http://192.168.1.14:8000/api/";
+  ApiService(this.token);
+
+  final String baseUrl = "http://192.168.1.105:8000/api/";
 
   Future<List<User>> fetchUsers() async {
     http.Response response = await http.get(
@@ -17,6 +19,7 @@ class ApiService {
       headers: {
         HttpHeaders.contentTypeHeader: 'application/json',
         HttpHeaders.acceptHeader: 'application/json',
+        HttpHeaders.authorizationHeader: 'Bearer $token'
       },
     );
 
@@ -25,27 +28,13 @@ class ApiService {
     return users.map((user) => User.fromJson(user)).toList();
   }
 
-  Future<User> addUser(String name, String email) async {
-    http.Response response = await http.post(Uri.parse('${baseUrl}users'),
-        headers: {
-          HttpHeaders.contentTypeHeader: 'application/json',
-          HttpHeaders.acceptHeader: 'application/json'
-        },
-        body: jsonEncode({'name': name, 'email': email}));
-
-    if (response.statusCode != 201) {
-      throw Exception('Error happened on create');
-    }
-
-    return User.fromJson(jsonDecode(response.body));
-  }
-
   Future<User> updateUser(User user) async {
     http.Response response =
         await http.put(Uri.parse('${baseUrl}users/${user.id}'),
             headers: {
               HttpHeaders.contentTypeHeader: 'application/json',
-              HttpHeaders.acceptHeader: 'application/json'
+              HttpHeaders.acceptHeader: 'application/json',
+              HttpHeaders.authorizationHeader: 'Bearer $token'
             },
             body: jsonEncode({'name': user.name, 'email': user.email}));
 
@@ -60,7 +49,8 @@ class ApiService {
     http.Response response =
         await http.get(Uri.parse('${baseUrl}patients'), headers: {
       HttpHeaders.contentTypeHeader: 'application/json',
-      HttpHeaders.acceptHeader: 'application/json'
+      HttpHeaders.acceptHeader: 'application/json',
+      HttpHeaders.authorizationHeader: 'Bearer $token'
     });
 
     List patients = jsonDecode(response.body);
@@ -73,7 +63,8 @@ class ApiService {
     http.Response response = await http.post(Uri.parse('${baseUrl}patients'),
         headers: {
           HttpHeaders.contentTypeHeader: 'application/json',
-          HttpHeaders.acceptHeader: 'application/json'
+          HttpHeaders.acceptHeader: 'application/json',
+          HttpHeaders.authorizationHeader: 'Bearer $token'
         },
         body: jsonEncode(
             {'name': name, 'email': email, 'address': address, 'dob': dob}));
@@ -100,7 +91,8 @@ class ApiService {
         await http.put(Uri.parse('${baseUrl}patients/${patient.id.toString()}'),
             headers: {
               HttpHeaders.contentTypeHeader: 'application/json',
-              HttpHeaders.acceptHeader: 'application/json'
+              HttpHeaders.acceptHeader: 'application/json',
+              HttpHeaders.authorizationHeader: 'Bearer $token'
             },
             body: jsonEncode({
               'name': patient.name,
@@ -120,7 +112,8 @@ class ApiService {
     http.Response response =
         await http.get(Uri.parse('${baseUrl}appointments'), headers: {
       HttpHeaders.contentTypeHeader: 'application/json',
-      HttpHeaders.acceptHeader: 'application/json'
+      HttpHeaders.acceptHeader: 'application/json',
+      HttpHeaders.authorizationHeader: 'Bearer $token'
     });
 
     List appointments = jsonDecode(response.body);
@@ -136,7 +129,8 @@ class ApiService {
         await http.post(Uri.parse('${baseUrl}appointments'),
             headers: {
               HttpHeaders.contentTypeHeader: 'application/json',
-              HttpHeaders.acceptHeader: 'application/json'
+              HttpHeaders.acceptHeader: 'application/json',
+              HttpHeaders.authorizationHeader: 'Bearer $token'
             },
             body: jsonEncode({
               'patient_id': patientId,
@@ -158,7 +152,8 @@ class ApiService {
         Uri.parse('${baseUrl}appointments/${appointment.id.toString()}'),
         headers: {
           HttpHeaders.contentTypeHeader: 'application/json',
-          HttpHeaders.acceptHeader: 'application/json'
+          HttpHeaders.acceptHeader: 'application/json',
+          HttpHeaders.authorizationHeader: 'Bearer $token'
         },
         body: jsonEncode({
           'patient_id': appointment.patientId,
@@ -175,13 +170,14 @@ class ApiService {
     return Appointment.fromJson(jsonDecode(response.body));
   }
 
-  Future<String> login(String email, String password) async {
+  Future<String> login(String email, String password, String deviceName) async {
     http.Response response = await http.post(Uri.parse('${baseUrl}auth/login'),
         headers: {
           HttpHeaders.contentTypeHeader: 'application/json',
-          HttpHeaders.acceptHeader: 'application/json'
+          HttpHeaders.acceptHeader: 'application/json',
         },
-        body: jsonEncode({email: email, password: password}));
+        body: jsonEncode(
+            {'email': email, 'password': password, 'device_name': deviceName}));
 
     if (response.statusCode == 422) {
       Map<String, dynamic> body = jsonDecode(response.body);
@@ -201,19 +197,20 @@ class ApiService {
   }
 
   Future<String> register(String name, String email, String password,
-      String passwordConfirm) async {
+      String passwordConfirm, String deviceName) async {
     String url = "${baseUrl}auth/register";
 
     http.Response response = await http.post(Uri.parse(url),
         headers: {
           HttpHeaders.contentTypeHeader: 'application/json',
-          HttpHeaders.acceptHeader: 'application/json',
+          HttpHeaders.acceptHeader: 'application/json'
         },
         body: jsonEncode({
           'name': name,
           'email': email,
           'password': password,
-          'password_confirmation': passwordConfirm
+          'password_confirmation': passwordConfirm,
+          'device_name': deviceName
         }));
 
     if (response.statusCode == 422) {

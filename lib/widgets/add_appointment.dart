@@ -11,7 +11,7 @@ class AddAppointment extends StatefulWidget {
   const AddAppointment(this.appointmentCallback, {super.key});
 
   @override
-  _AddAppointment createState() => _AddAppointment();
+  State<AddAppointment> createState() => _AddAppointment();
 }
 
 class _AddAppointment extends State<AddAppointment> {
@@ -75,6 +75,7 @@ class _AddAppointment extends State<AddAppointment> {
                   if (newValue == null) {
                     return 'Invalid number format';
                   }
+                  return null;
                 },
                 onChanged: (text) => setState(() {
                   errorMessage = '';
@@ -103,6 +104,7 @@ class _AddAppointment extends State<AddAppointment> {
                   if (newValue == null) {
                     return 'Invalid number format';
                   }
+                  return null;
                 },
                 onChanged: (text) => setState(() {
                   errorMessage = '';

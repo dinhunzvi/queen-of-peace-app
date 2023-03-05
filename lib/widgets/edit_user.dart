@@ -6,10 +6,10 @@ class EditUser extends StatefulWidget {
   final Function userCallback;
   final User user;
 
-  const EditUser( this.userCallback, this.user, {super.key});
+  const EditUser(this.userCallback, this.user, {super.key});
 
   @override
-  _EditUserState createState() => _EditUserState();
+  State<EditUser> createState() => _EditUserState();
 }
 
 class _EditUserState extends State<EditUser> {
@@ -31,9 +31,9 @@ class _EditUserState extends State<EditUser> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: const EdgeInsets.only( top: 50, left: 10, right: 10 ),
+      padding: const EdgeInsets.only(top: 50, left: 10, right: 10),
       child: Form(
-        key: _formKey,
+          key: _formKey,
           child: Column(
             children: <Widget>[
               TextFormField(
@@ -76,7 +76,7 @@ class _EditUserState extends State<EditUser> {
                   ElevatedButton(
                     onPressed: () => Navigator.pop(context),
                     style:
-                    ElevatedButton.styleFrom(backgroundColor: Colors.red),
+                        ElevatedButton.styleFrom(backgroundColor: Colors.red),
                     child: const Text('Cancel'),
                   )
                 ],
@@ -90,7 +90,7 @@ class _EditUserState extends State<EditUser> {
     );
   }
 
-  Future updateUser( context ) async {
+  Future updateUser(context) async {
     final form = _formKey.currentState;
 
     if (!form!.validate()) {
@@ -100,7 +100,7 @@ class _EditUserState extends State<EditUser> {
     widget.user.email = userEmailController.text;
     widget.user.name = userNameController.text;
 
-    await widget.userCallback( widget.user );
+    await widget.userCallback(widget.user);
 
     Navigator.pop(context);
   }

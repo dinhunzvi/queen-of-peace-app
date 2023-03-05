@@ -9,7 +9,7 @@ class Users extends StatefulWidget {
   const Users({super.key});
 
   @override
-  _UsersState createState() => _UsersState();
+  State<Users> createState() => _UsersState();
 }
 
 class _UsersState extends State<Users> {
@@ -19,37 +19,37 @@ class _UsersState extends State<Users> {
     List<User> users = [];
 
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('Users'),
-        ),
-        body: ListView.builder(
-            itemCount: users.length,
-            itemBuilder: (context, index) {
-              User user = users[index];
-              return ListTile(
-                title: Text(user.name),
-                trailing: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[Text(user.email)],
-                    ),
-                    IconButton(
-                        onPressed: () {
-                          showModalBottomSheet(
-                              isScrollControlled: true,
-                              context: context,
-                              builder: (BuildContext context) {
-                                return EditUser(provider.updateUser, user);
-                              });
-                        },
-                        icon: const Icon(Icons.edit))
-                  ],
-                ),
-              );
-            }),
-        floatingActionButton: FloatingActionButton(
+      appBar: AppBar(
+        title: const Text('Users'),
+      ),
+      body: ListView.builder(
+          itemCount: users.length,
+          itemBuilder: (context, index) {
+            User user = users[index];
+            return ListTile(
+              title: Text(user.name),
+              trailing: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[Text(user.email)],
+                  ),
+                  IconButton(
+                      onPressed: () {
+                        showModalBottomSheet(
+                            isScrollControlled: true,
+                            context: context,
+                            builder: (BuildContext context) {
+                              return EditUser(provider.updateUser, user);
+                            });
+                      },
+                      icon: const Icon(Icons.edit))
+                ],
+              ),
+            );
+          }),
+      /*floatingActionButton: FloatingActionButton(
           child: const Icon(Icons.add),
           onPressed: () {
             showModalBottomSheet(
@@ -59,6 +59,7 @@ class _UsersState extends State<Users> {
                   return AddUser(provider.addUser);
                 });
           },
-        ));
+        )*/
+    );
   }
 }

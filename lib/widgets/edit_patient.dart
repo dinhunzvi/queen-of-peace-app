@@ -10,7 +10,7 @@ class EditPatient extends StatefulWidget {
       : super(key: key);
 
   @override
-  _EditPatientState createState() => _EditPatientState();
+  State<EditPatient> createState() => _EditPatientState();
 }
 
 class _EditPatientState extends State<EditPatient> {

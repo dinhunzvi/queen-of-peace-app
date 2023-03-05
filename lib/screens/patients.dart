@@ -9,7 +9,7 @@ class Patients extends StatefulWidget {
   const Patients({super.key});
 
   @override
-  _PatientsState createState() => _PatientsState();
+  State<Patients> createState() => _PatientsState();
 }
 
 class _PatientsState extends State<Patients> {
@@ -47,7 +47,7 @@ class _PatientsState extends State<Patients> {
                             });
                       },
                       icon: const Icon(Icons.edit)),
-                  IconButton(onPressed: null, icon: const Icon(Icons.delete))
+                  const IconButton(onPressed: null, icon: Icon(Icons.delete))
                 ],
               ),
             );
