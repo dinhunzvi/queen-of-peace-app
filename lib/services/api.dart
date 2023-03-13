@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:flutter/foundation.dart';
 import 'package:queen_of_peace/models/appointment.dart';
 
 import '../models/patient.dart';
@@ -12,7 +11,7 @@ class ApiService {
 
   ApiService(this.token);
 
-  final String baseUrl = "http://192.168.1.105:8000/api/";
+  final String baseUrl = "http://192.168.1.104:8000/api/";
 
   Future<List<User>> fetchUsers() async {
     http.Response response = await http.get(
